@@ -1,5 +1,3 @@
-use indicatif::{ProgressBar, ProgressStyle};
-
 use crate::utils::theme::ThemeFile;
 
 use super::{get_assets::ShopifyAsset, Shopify};
@@ -51,43 +49,42 @@ impl Shopify {
             }
         }
 
-        println!("Uploading {} assets", assets_to_upload.len());
-        // Progress bar
-        let pb = ProgressBar::new(assets_to_upload.len() as u64);
-        pb.set_style(
-            ProgressStyle::default_bar()
-                .template(
-                    "{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})",
-                )
-                .progress_chars("#>-"),
+        println!(
+            "[{}]: Uploading {} assets",
+            self.store,
+            assets_to_upload.len()
         );
 
         // Upload assets
-        for asset in &assets_to_upload {
+        for (index, asset) in assets_to_upload.iter().enumerate() {
             self.upload_asset(asset).await;
-            pb.inc(1);
+            println!(
+                "[{}]: Uploaded {}/{} files",
+                self.store,
+                index + 1,
+                assets_to_upload.len()
+            );
         }
 
-        pb.finish_and_clear();
-        println!("The assets have been uploaded");
-        println!("Deleting {} assets", assets_to_delete.len());
-
-        // Delete assets
-        let pb = ProgressBar::new(assets_to_delete.len() as u64);
-        pb.set_style(
-            ProgressStyle::default_bar()
-                .template(
-                    "{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})",
-                )
-                .progress_chars("#>-"),
+        println!("[{}]: The assets have been uploaded", self.store);
+        println!(
+            "[{}]: Deleting {} assets",
+            self.store,
+            assets_to_delete.len()
         );
 
-        for asset in &assets_to_delete {
+        // Delete assets
+        for (index, asset) in assets_to_delete.iter().enumerate() {
             self.delete_asset(asset).await;
-            pb.inc(1);
+            println!(
+                "[{}]: Deleted {}/{} files",
+                self.store,
+                index + 1,
+                assets_to_delete.len()
+            );
         }
 
-        println!("The assets have been deleted");
+        println!("[{}]: The assets have been deleted", self.store);
 
         Ok(())
     }
