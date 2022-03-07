@@ -4,7 +4,7 @@ use std::fs;
 pub struct ThemeFile {
     pub file_name: String,
     pub checksum: String,
-    pub content: String,
+    pub content: Vec<u8>,
     pub file_size: u64,
 }
 
@@ -29,7 +29,7 @@ pub fn get_theme_content(theme_dir: &str) -> Vec<ThemeFile> {
             continue;
         }
 
-        let file_content = fs::read_to_string(&path).unwrap();
+        let file_content = fs::read(&path).unwrap();
         let file_size = fs::metadata(&path).unwrap().len();
         let file_checksum = format!("{:x}", md5::compute(&file_content));
 
@@ -57,7 +57,7 @@ pub fn get_theme_content(theme_dir: &str) -> Vec<ThemeFile> {
             continue;
         }
 
-        let file_content = fs::read_to_string(&path).unwrap();
+        let file_content = fs::read(&path).unwrap();
         let file_size = fs::metadata(&path).unwrap().len();
         let file_checksum = format!("{:x}", md5::compute(&file_content));
 
@@ -85,7 +85,7 @@ pub fn get_theme_content(theme_dir: &str) -> Vec<ThemeFile> {
             continue;
         }
 
-        let file_content = fs::read_to_string(&path).unwrap();
+        let file_content = fs::read(&path).unwrap();
         let file_size = fs::metadata(&path).unwrap().len();
         let file_checksum = format!("{:x}", md5::compute(&file_content));
 
@@ -143,7 +143,7 @@ pub fn get_theme_content(theme_dir: &str) -> Vec<ThemeFile> {
             continue;
         }
 
-        let file_content = fs::read_to_string(&path).unwrap();
+        let file_content = fs::read(&path).unwrap();
         let file_size = fs::metadata(&path).unwrap().len();
         let file_checksum = format!("{:x}", md5::compute(&file_content));
 
@@ -171,7 +171,7 @@ pub fn get_theme_content(theme_dir: &str) -> Vec<ThemeFile> {
             continue;
         }
 
-        let file_content = fs::read_to_string(&path).unwrap();
+        let file_content = fs::read(&path).unwrap();
         let file_size = fs::metadata(&path).unwrap().len();
         let file_checksum = format!("{:x}", md5::compute(&file_content));
 
@@ -199,7 +199,7 @@ pub fn get_theme_content(theme_dir: &str) -> Vec<ThemeFile> {
             continue;
         }
 
-        let file_content = fs::read_to_string(&path).unwrap();
+        let file_content = fs::read(&path).unwrap();
         let file_size = fs::metadata(&path).unwrap().len();
         let file_checksum = format!("{:x}", md5::compute(&file_content));
 
@@ -228,7 +228,7 @@ pub fn get_theme_content(theme_dir: &str) -> Vec<ThemeFile> {
             continue;
         }
 
-        let file_content = fs::read_to_string(&path).unwrap();
+        let file_content = fs::read(&path).unwrap();
         let file_size = fs::metadata(&path).unwrap().len();
         let file_checksum = format!("{:x}", md5::compute(&file_content));
 
