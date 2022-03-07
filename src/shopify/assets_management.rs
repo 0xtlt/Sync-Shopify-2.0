@@ -9,7 +9,7 @@ impl Shopify {
         let data = serde_json::to_string_pretty(&json!({
             "asset": json!({
               "key": asset.file_name,
-              "value": asset.content,
+              "attachment": base64::encode(&asset.content),
             })
         }))
         .unwrap();
