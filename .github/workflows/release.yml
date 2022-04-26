@@ -1,45 +1,23 @@
-name: Release
-
+name: Rust-static-build
 on:
   push:
-    tags:
-      - v[0-9]+.*
-
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+env:
+  CARGO_TERM_COLOR: always
+  BUILD_TARGET: x86_64-unknown-linux-musl
+  BINARY_NAME: syncshopify2
 jobs:
-  create-release:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: taiki-e/create-gh-release-action@v1
-        # with:
-        # (optional)
-        # changelog: CHANGELOG.md
-        env:
-          # (required)
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  upload-assets:
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v2
-      - uses: taiki-e/upload-rust-binary-action@v1
-        with:
-          # (required)
-          bin: syncshopify2
-          # (optional) On which platform to distribute the `.tar.gz` file.
-          # [default value: unix]
-          # [possible values: all, unix, windows, none]
-          tar: unix
-          # (optional) On which platform to distribute the `.zip` file.
-          # [default value: windows]
-          # [possible values: all, unix, windows, none]
-          zip: windows
-        env:
-          # (required)
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v2
+    - name: Build-musl Ubuntu
+      uses: jean-dfinity/rust-musl-action@master
+      with:
+        args: cargo build --target $BUILD_TARGET --release
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.BINARY_NAME }}
+        path: target/x86_64-unknown-linux-musl/release/${{ env.BINARY_NAME }}*
