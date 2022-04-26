@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    # Install ubuntu libraries like libssl-dev
+    - name: Install libs
+      run: |
+        apt install libssl-dev -y
     - name: Build-musl Ubuntu
       uses: jean-dfinity/rust-musl-action@master
       with:
